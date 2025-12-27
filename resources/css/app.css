@@ -1,3 +1,77 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+/* Custom Colors - Bakery Theme */
+:root {
+    --primary-brown: #6B4423;
+    --secondary-brown: #8B5A3C;
+    --light-cream: #F5F5DC;
+    --accent-orange: #D4A574;
+    --text-dark: #2C1810;
+}
+
+/* Custom Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--light-cream);
+    color: var(--text-dark);
+}
+
+.btn-primary-custom {
+    background-color: var(--primary-brown);
+    border: none;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-primary-custom:hover {
+    background-color: var(--secondary-brown);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.navbar-custom {
+    background-color: var(--light-cream);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.card-product {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.3s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.card-product:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+}
+
+.hero-section {
+    background: linear-gradient(rgba(107, 68, 35, 0.1), rgba(107, 68, 35, 0.1)),
+                url('/images/hero-bg.jpg') center/cover;
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--primary-brown);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.footer-custom {
+    background-color: var(--primary-brown);
+    color: white;
+    padding: 40px 0 20px;
+    margin-top: 80px;
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
