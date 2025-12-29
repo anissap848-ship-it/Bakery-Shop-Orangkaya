@@ -3,28 +3,49 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
+use App\Models\Product;
 
+// Homepage (simple welcome)
 Route::get('/', function () {
     return view('welcome');
 });
 
+// Dashboard (dengan stats & products)
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $totalProducts = Product::count();
+    $totalUnits = Product::sum('stock');
+    $inStock = Product::where('stock', '>', 0)->count();
+    $lowStock = Product::where('stock', '>', 0)->where('stock', '<=', 10)->count();
+    $outOfStock = Product::where('stock', 0)->count();
+
+    $inStockPercentage = $totalProducts > 0 ? round(($inStock / $totalProducts) * 100) : 0;
+
+    // Products by category
+    $artisanBreads = Product::where('category', 'Artisan Breads')->latest()->get();
+    $sweetPastries = Product::where('category', 'Sweet Pastries')->latest()->get();
+    $signatureCakes = Product::where('category', 'Signature Cakes')->latest()->get();
+
+    return view('dashboard', compact(
+        'totalProducts',
+        'totalUnits',
+        'inStock',
+        'lowStock',
+        'outOfStock',
+        'inStockPercentage',
+        'artisanBreads',
+        'sweetPastries',
+        'signatureCakes'
+    ));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-use App\Http\Controllers\ShopController;
-
-// Shop routes (public - accessible without login)
-Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
-Route::get('/shop/{product}', [ShopController::class, 'show'])->name('shop.show');
-Route::get('/shop/category/{category}', [ShopController::class, 'category'])->name('shop.category');
-
+// Auth routes (perlu login)
 Route::middleware('auth')->group(function () {
+    // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Product routes
+    // Product CRUD (admin only)
     Route::resource('products', ProductController::class);
 });
 
